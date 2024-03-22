@@ -7,9 +7,11 @@ import numpy as np
 ##
 
 def ngsi_get(entity , window_length):# takes last 5000 data points --> this can be refined so as to fetch only values 
-    url = 'http://localhost:8080/temporal/entities/' + entity
-    headers = {'NGSILD-Tenant': 'openiot',
-    'Link': '<http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+    url = 'http://localhost:8668/v2/entities/' + entity
+    headers = {
+        'Accept': 'application/json',
+        'Fiware-Service': 'openiot',
+        'Fiware-ServicePath': '/'
     }
     params = {
         'lastN': window_length
@@ -39,7 +41,9 @@ def data_to_np(data):
                 (data["ch 3"])['value'],
                 (data["ch 4"])['value'],
                 (data["ch 5"])['value'],
-                (data["ch 6"])['value']
+                (data["ch 6"])['value'],
+                (data["ch 7"])['value'],
+                (data["ch 8"])['value']
             ])
     numpy_arr = np.array(parsed_data).T
     return numpy_arr
@@ -100,26 +104,18 @@ def stress_payload(s_mean, s_med, s_mpower):
         payload_raw[key] = {"ch{}".format(i+1): value for i, value in enumerate(data)}
     return payload_raw
     
-def ngsi_post(entity,data):#updates latest values
-    url = 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Stress:01/attrs/category'
+def ngsi_patch(entity,d):#updates latest values
+    url = 'http://localhost:1026/v2/entities/' + entity +'/attrs?type=Stress'
 
     headers = {
-        'Content-Type': 'application/json',
-        'Link': '<http://context/ngsi-context.jsonld>; rel="http://www.w3.org/ns/json-ld#context"; type="application/ld+json"'
+        'Content-Type': 'application/json'
     }
-
-    data = {
-        "value": ["sensor", "actuator"],
-        "type": "Property"
-    }
-
-    response = requests.patch(url, headers=headers, json=data)    
+    data = d
+    response = requests.patch(url, headers=headers, json=data)
 
 # main
-
-
-entity = 'urn:ngsi-ld:Operator:01'
-
+entity = 'urn:ngsi-ld:Operator:001' # holds emg data
+entity2 = 'urn:ngsi-ld:Stress:001' # holds stress state as mean, median and mean power frequencies
 window_length = 5000
 with open('params.json', 'r') as json_file:
     parms = json.load(json_file)
@@ -128,7 +124,7 @@ time.sleep(5)
 while True:
     start_time = time.time()
     data = ngsi_get(entity,window_length)
-    if data ==0:     # case when the there is no data transmission
+    #if data ==0:     # case when the there is no data transmission
         # do something when error code is returned probably skip the code   
     
     data_arr= data_to_np(data) # convert data from timescaleDB to np array shape (6, window length) this is transposed
@@ -138,8 +134,8 @@ while True:
     s_mean, s_med, s_mpower= stress_out(mean_frequency, median_frequency, mean_power_frequency, parms) # stress level 
     
     payload_raw = stress_payload(s_mean, s_med, s_mpower)    
-    json_data = json.dumps(data)
-    ngsi_post(json_data, entity)
+    #json_data = json.dumps(payload_raw)
+    ngsi_patch(payload_raw, entity2)
     if (time.time() - start_time) < 5:
         time.sleep(5- time.time() + start_time)
         
