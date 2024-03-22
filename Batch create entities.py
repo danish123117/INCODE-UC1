@@ -1,7 +1,7 @@
 import json
 import requests
 
-def ngsi_create_entity(entity,d):#updates latest values
+def ngsi_create_entity(d):#updates latest values
     url = 'http://localhost:1026/v2/entities'
 
     headers = {
@@ -16,12 +16,12 @@ def ngsi_create_entity(entity,d):#updates latest values
 with open('Operator.json', 'r') as file:
     op = json.load(file)
     
-temp = ngsi_create_entity(entity1 , op)
+temp = ngsi_create_entity(op)
 print(temp)
 with open('Stress.json', 'r') as file:
     st = json.load(file)
     
-temp2= ngsi_create_entity(entity1 , st)
+temp2= ngsi_create_entity(st)
 print(temp2)
 
 # change this to make it like a loop which seeks all Json files 
