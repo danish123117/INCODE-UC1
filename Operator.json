@@ -1,33 +1,122 @@
-{   
-    "id":"urn:ngsi-ld:Operator:001", 
-    "type":"Operator",
-    "TimeStamp": 10000,
-    "index": 1000,
+{
+    "id": "urn:ngsi-ld:Operator:006",
+    "type": "Operator",
+    "TimeStamp": {
+      "type": "Text",
+      "value": "132"
+    },
+    "index": {
+      "type": "Integer",
+      "value": 0
+    },
     "data": {
-      "ch 1": {
-        "value": 0.00001,
-        "Feasibility": true
-      },
-      "ch 2": {
-        "value": 0.00001,
-        "Feasibility": true
-      },
-      "ch 3": {
-        "value": 0.00001,
-        "Feasibility": true
-      },
-      "ch 4": {
-        "value": 0.00001,
-        "Feasibility": true
-      },
-      "ch 5": {
-        "value": 0.00001,
-        "Feasibility": true
-      },
-      "ch 6": {
-        "value": 0.00001,
-        "Feasibility": true
+      "type": "object",
+      "value": {
+        "ch1": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch2": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch3": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch4": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch5": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch6": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch7": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        },
+        "ch8": {
+          "type": "object",
+          "value": {
+            "value": {
+              "type": "number",
+              "value": 0.0
+            },
+            "Feasibility": {
+              "type": "boolean",
+              "value": false
+            }
+          }
+        }
       }
     }
-}
+  }
   
