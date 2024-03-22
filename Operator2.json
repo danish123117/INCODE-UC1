@@ -1,0 +1,21 @@
+{
+    "id": "urn:ngsi-ld:Operator:010",
+    "type": "Operator",
+    "TimeStamp": {
+      "type": "Text",
+      "value": "132"
+    },
+    "index": {
+      "type": "Integer",
+      "value": 0
+    },
+    "data":{
+      "type":"array",
+      "value":[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+              },
+    "Feaisability":{
+      "type":"array",
+      "value":[true,true,true,true,true,true,true,true]
+    }
+}
+     
