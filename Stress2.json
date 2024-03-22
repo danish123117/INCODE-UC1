@@ -1,0 +1,15 @@
+{
+    "id": "urn:ngsi-ld:Stress:010",
+    "type": "Stress",
+    "medianFrequencyState": {
+      "type": "array",
+      "value": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]},
+    "meanFrequencyState": {
+      "type": "object",
+      "value": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] },
+    "meanPowerFrequencyState": {
+      "type": "object",
+      "value": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    }
+  }
+  
