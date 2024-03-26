@@ -1,5 +1,5 @@
 {
-    "id": "urn:ngsi-ld:Stress:010",
+    "id": "urn:ngsi-ld:Stress:001",
     "type": "Stress",
     "medianFrequencyState": {
       "type": "array",
