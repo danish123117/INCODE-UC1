@@ -1,5 +1,5 @@
 {
-    "id": "urn:ngsi-ld:Operator:010",
+    "id": "urn:ngsi-ld:Operator:001",
     "type": "Operator",
     "TimeStamp": {
       "type": "Text",

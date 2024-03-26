@@ -19,8 +19,8 @@ def ngsi_get(entity , window_length):# takes last 5000 data points --> this can 
         return response.json()
     else:
         return 0
-
-def data_to_np(data):
+#OK
+def data_to_np_old(data):
     parsed_data = []
     for js in data:
         if not js:
@@ -32,21 +32,34 @@ def data_to_np(data):
             print(f"JSON decoding error: {e}")
             continue
         if "data" in batch:
-            data = batch["data"]
-            parsed_data.append([
-                (data["ch 1"])['value'],
-                (data["ch 2"])['value'],
-                (data["ch 3"])['value'],
-                (data["ch 4"])['value'],
-                (data["ch 5"])['value'],
-                (data["ch 6"])['value'],
-                (data["ch 7"])['value'],
-                (data["ch 8"])['value']
-            ])
+            data1 = batch["data"]
+            parsed_data.append(data1['value'])
     numpy_arr = np.array(parsed_data).T
     return numpy_arr
 
-def data_filter(data_arr):# Applies filteration to
+def data_to_np(data):
+    parsed_data = data["values"]
+    converted_data = [[float(num) for num in sublist] for sublist in parsed_data]
+    numpy_arr = np.array(converted_data).T
+    return numpy_arr
+def data_to_np_kv(data):# can be used to replace data_to_np function if options = KeyValues is used
+    parsed_data = []
+    for js in data:
+        if not js:
+            print("JSON data is empty or missing")
+            continue
+        try:
+            batch = json.loads(js) 
+        except json.decoder.JSONDecodeError as e:
+            print(f"JSON decoding error: {e}")
+            continue
+        if "data" in batch:
+            parsed_data.append(batch['data'])
+    numpy_arr = np.array(parsed_data).T
+    return numpy_arr
+
+##to check
+def data_filter(dat_arr):# Applies filteration to## check the 
     Sampling_frequency = 1000
     band_lo = 20
     band_hi = 450
@@ -61,7 +74,7 @@ def data_filter(data_arr):# Applies filteration to
     filtered_band = np.array(signal.sosfiltfilt(sos_band , dat_arr))
     filtered = signal.lfilter(b, a, filtered_band)
     return filtered # test this
-
+##OK
 def out_stft(filtered): # Apply stft and extract requisite features.
     frequency_domain = np.fft.fft(filtered, axis=0)
     magnitude_spectrum = np.abs(frequency_domain)
@@ -78,10 +91,10 @@ def out_stft(filtered): # Apply stft and extract requisite features.
     #print("Mean Frequencies:", mean_frequencies)
     #print("Median Frequencies:", median_frequencies)
     #print("Men Power frequency:", median_frequencies) 
-    return median_frequency , mean_frequency , mean_power_frequency # test this
+    return median_frequencies , mean_frequencies , mean_power_frequencies # test this
     
-    
-def stress_out(f_mean, f_median, f_power, parms): #gives output stress level# should be generalised to n sensors rather than
+##OK   
+def stress_out(f_mean, f_median, f_power, parms): #output is 3 1d lists of length = number of channels
     s_mean = []
     s_med= []
     s_mpower = []
@@ -94,12 +107,20 @@ def stress_out(f_mean, f_median, f_power, parms): #gives output stress level# sh
         s_med.append([p_med[ch]/f_median[i]])
         s_mpower.append([p_pow[ch]/f_power[i]])
     return s_mean, s_med, s_mpower
-
+#OK
 def stress_payload(s_mean, s_med, s_mpower):
-    data_lists = [s_med, s_mean, s_mpower]
-    keys = ["medianFrequencyState", "meanFrequencyState", "meanPowerFrequencyState"]
-    for data, key in zip(data_lists, keys):
-        payload_raw[key] = {"ch{}".format(i+1): value for i, value in enumerate(data)}
+    payload_raw = {
+        "medianFrequencyState": {
+        "type": "array",
+        "value": s_med},
+        "meanFrequencyState": {
+         "type": "array",
+         "value": s_mean },
+       "meanPowerFrequencyState": {
+          "type": "array",
+          "value": s_mpower
+        }
+     }
     return payload_raw
     
 def ngsi_patch(entity,d):#updates latest values

@@ -20,7 +20,7 @@ def main():
             # do something when error code is returned probably skip the code   
         
         data_arr= data_to_np(data) # convert data from timescaleDB to np array shape (6, window length) this is transposed
-        filter_data = data_filter(data_arr) # applies band pass filter shape is still (6,window lenght)
+        filter_data = data_filter(data_arr) # applies band pass filter shape is still (6,window lenght) check if it works
         median_frequency , mean_frequency, mean_power_frequency = out_stft(np.transpose(filter_data)) # extracted features , these should be 3 (1x8) lists 
         
         s_mean, s_med, s_mpower= stress_out(mean_frequency, median_frequency, mean_power_frequency, parms) # stress level 
