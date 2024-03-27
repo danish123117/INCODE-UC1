@@ -5,16 +5,16 @@ import requests
 import numpy as np
 
 def ngsi_get(entity , window_length):# takes last 5000 data points --> this can be refined so as to fetch only values 
-    url = 'http://localhost:8668/v2/entities/' + entity
+    url = 'http://localhost:8668/v2/entities/' + entity + "/attrs/data"
+    payload ={}
     headers = {
-        'Accept': 'application/json',
         'Fiware-Service': 'openiot',
         'Fiware-ServicePath': '/'
     }
     params = {
         'lastN': window_length
     }
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.request("GET",url, headers=headers, params=params, data=payload)
     if response.status_code == 200:
         return response.json()
     else:
@@ -38,7 +38,6 @@ def data_to_np_old(data):
     return numpy_arr
 
 def data_to_np(data):
-    data_dict = json.loads(data)
     parsed_data = data_dict["values"]
     converted_data = [[float(num) for num in sublist] for sublist in parsed_data]
     numpy_arr = np.array(converted_data).T
@@ -103,7 +102,7 @@ def stress_out(f_mean, f_median, f_power, parms): #output is 3 1d lists of lengt
     p_med= parms["medianFrequency"]
     p_pow= parms["meanPowerFrequency"]
     for i in range(len(f_mean)):
-        ch = "c" +str(i+1)
+        ch = "ch" +str(i+1)
         s_mean.append([p_mean[ch]/f_mean[i]])
         s_med.append([p_med[ch]/f_median[i]])
         s_mpower.append([p_pow[ch]/f_power[i]])
