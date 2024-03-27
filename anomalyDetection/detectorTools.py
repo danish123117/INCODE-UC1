@@ -38,7 +38,8 @@ def data_to_np_old(data):
     return numpy_arr
 
 def data_to_np(data):
-    parsed_data = data["values"]
+    data_dict = json.loads(data)
+    parsed_data = data_dict["values"]
     converted_data = [[float(num) for num in sublist] for sublist in parsed_data]
     numpy_arr = np.array(converted_data).T
     return numpy_arr
